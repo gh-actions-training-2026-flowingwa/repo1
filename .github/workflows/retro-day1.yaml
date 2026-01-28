@@ -1,0 +1,37 @@
+name: Retro day 1
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      VAR1:
+        type: boolean
+        description: Please check
+        required: true
+      VAR2:
+        type: string
+        description: Some text
+        required: true
+
+env:
+  VAR1: ${{inputs.VAR1}}
+  VAR2: ${{inputs.VAR2}}
+
+jobs:
+  retro_day_1:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Step1 of Job 1
+        run: echo $VAR2
+        if: ${{env.VAR1}}
+      - name: Step 2 of Job 1
+        run: echo ${{ github.actor }}
+  job2:
+    runs-on: ubuntu-slim
+    needs: retro_day_1
+    steps:
+      - name: Step 1 of Job 2
+        run: echo ${{ github.actor }}
+      
