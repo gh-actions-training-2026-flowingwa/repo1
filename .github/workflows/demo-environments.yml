@@ -1,0 +1,43 @@
+name: Demo deployment enviornments
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        options:
+          - devops
+          - staging
+          - prod
+
+jobs:
+  build:
+    runs-on: ubuntu-slim
+    steps:
+      - name: build
+        run: echo Building the app...
+
+  devops:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: DevOps
+        run: DevOps things to do
+
+  deployment:
+    runs-on: ubuntu-24.04
+    needs: 
+      - build
+      - devops
+    environment:
+      name: ${{inputs.environment}}
+      url: ${{vars.APP_URL}} 
+    steps:
+      - name: Staging
+        run: echo Feature is being deployed
+        if: ${{vars.FEATURE_FLAG == 'feature_flag_staging'}}
+      - name: Show message
+        if: ${{ vars.FEATURE_FLAG != 'feature_flag_staging'}}
+        run: echo Feature is not being deployed
+      - name: Show db password
+        if: ${{vars.FEATURE_FLAG == 'feature_prod'}}
+        run: echo ${{ secrets.DB_PASSWORD }}
