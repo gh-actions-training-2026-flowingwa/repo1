@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Step1 of Job 1
         run: echo $VAR2
-        if: ${{env.VAR1}}
+        if: ${{env.VAR1 == 'true'}}
       - name: Step 2 of Job 1
         run: echo ${{ github.actor }}
   job2:
