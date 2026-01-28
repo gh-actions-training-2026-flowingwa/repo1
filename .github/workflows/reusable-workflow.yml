@@ -1,0 +1,11 @@
+name: Reusable workflow
+
+on:
+  workflow_call:
+
+jobs:
+  job1:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Say hello
+        run: echo Hello World!
